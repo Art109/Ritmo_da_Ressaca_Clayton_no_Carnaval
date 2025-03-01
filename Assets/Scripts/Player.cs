@@ -1,23 +1,68 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 5.0f; // Velocidade do movimento
-    public float rotationSpeed = 200.0f; // Velocidade da rotação
-
+    public float speed = 5.0f; 
+    public float rotationSpeed = 200.0f; 
     private float _horizontal;
     private float _vertical;
 
+    [Header("VFX - Player")]
+    public Vector3 playerWalkVFXOffset;
+
+    private ParticleSystem _playerWalkVFX;
+    private Rigidbody _rb;
+
+    private void Start()
+    {
+        _rb = GetComponent<Rigidbody>();
+        _rb.freezeRotation = true; 
+
+        _playerWalkVFX = VFXManager.Instance.GetPermanentVFXByType(VFXManager.VFXType.WALK,
+            this.transform.position, playerWalkVFXOffset, this.transform);
+    }
+
     void Update()
     {
-        // Captura entrada do jogador
-        _horizontal = Input.GetAxis("Horizontal"); // Rotação
-        _vertical = Input.GetAxis("Vertical"); // Movimento para frente e trás
+        _horizontal = Input.GetAxis("Horizontal");
+        _vertical = Input.GetAxis("Vertical");
 
-        // Movimenta o jogador para frente e para trás no eixo Z
-        transform.position += transform.forward * _vertical * speed * Time.deltaTime;
+        if (!Mathf.Approximately(_horizontal, 0) && Mathf.Approximately(_vertical, 0))
+        {
+            DisableWalkVFX();
+        }
+        else if (!Mathf.Approximately(_vertical, 0))
+        {
+            EnableWalkVFX();
+        }
 
-        // Rotaciona o jogador ao redor do eixo Y
+
         transform.Rotate(Vector3.up * _horizontal * rotationSpeed * Time.deltaTime);
+
+        Vector3 moveDirection = transform.forward * _vertical * speed;
+        _rb.velocity = new Vector3(moveDirection.x, _rb.velocity.y, moveDirection.z);
     }
+
+    private void FixedUpdate()
+    {
+
+    }
+
+    #region PLAYER_VFX
+    private void EnableWalkVFX()
+    {
+        if (!_playerWalkVFX.isPlaying)
+        {
+            _playerWalkVFX.Play();
+        }
+    }
+
+    private void DisableWalkVFX()
+    {
+        if (_playerWalkVFX.isPlaying)
+        {
+            _playerWalkVFX.Stop();
+        }
+    }
+    #endregion
 }

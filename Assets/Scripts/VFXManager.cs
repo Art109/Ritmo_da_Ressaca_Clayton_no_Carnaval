@@ -91,23 +91,27 @@ public class VFXManager : MonoBehaviour
     #endregion
 
     #region PlayVFBByTypeWithCollision
-    public void PlayVFXByTypeWithCollision(VFXType vfxType, Vector3 position, Transform parent,
-        List<Transform> planeTransforms, bool willDestroy = true, float timeToDestroy = 3f)
+    public void PlayVFXByTypeWithCollision(VFXType vfxType, Vector3 position, Vector3 offset,
+        Transform parent, bool willDestroy = true, 
+        float timeToDestroy = 3f, List<Transform> planeTransforms = null)
     {
         foreach (var vfx in vfxSetup)
         {
             if (vfx.vfxType == vfxType)
             {
                 var item = Instantiate(vfx.prefab, null);
-                item.transform.position = position;
+                item.transform.position = position + offset;
 
                 var particleSystem = item.GetComponent<ParticleSystem>();
                 if (particleSystem != null)
                 {
                     var collisionModule = particleSystem.collision;
-                    for(int i = 0; i < planeTransforms.Count; i++)
+                    if (planeTransforms != null)
                     {
-                        collisionModule.SetPlane(i, planeTransforms[i]);
+                        for (int i = 0; i < planeTransforms.Count; i++)
+                        {
+                            collisionModule.SetPlane(i, planeTransforms[i]);
+                        }
                     }
                 }
 
@@ -120,7 +124,7 @@ public class VFXManager : MonoBehaviour
     #endregion
 
     #region PlayPermanentVFX
-    public ParticleSystem PlayAndGetPermanentVFXByType(VFXType vfxType, Vector3 position, Vector3 offset,
+    public ParticleSystem GetPermanentVFXByType(VFXType vfxType, Vector3 position, Vector3 offset,
         Transform parent)
     {
         foreach (var vfx in vfxSetup)
