@@ -4,26 +4,35 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Singleton
-    public static GameManager Instance { get; private set; }
 
-    // Start is called before the first frame update
-    void Awake()
+    // Feature futura
+    //float tempo
+
+
+
+    public static GameManager instance;
+    [SerializeField] GameObject playerPrefab;
+
+    void Start()
     {
-        if (Instance == null)
-            Instance = this;
-        else
+        if (instance != null && instance != this)
             Destroy(gameObject);
+        else
+            instance = this;
     }
 
-    private void Start()
+
+    public void EndGame()
     {
-
+        //Logica de Finalizar o Game (CutScene)
     }
 
-    // Update is called once per frame
-    void Update()
+    public void RestartGame(Transform savePointPosition, Player player)
     {
-        
+        Destroy(player.gameObject);
+        Instantiate(playerPrefab, savePointPosition);
     }
+
+
+
 }

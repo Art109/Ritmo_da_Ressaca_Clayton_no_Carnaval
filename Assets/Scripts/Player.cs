@@ -1,51 +1,159 @@
-﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 5.0f; 
-    public float rotationSpeed = 200.0f; 
-    private float _horizontal;
-    private float _vertical;
+    Rigidbody rb;
+    float moveSpeed = 2;
+    [SerializeField] Transform movePoint;
+    [SerializeField] LayerMask obstacleLayer;
+    [SerializeField] float obstacleCheckRadius;
 
+
+    [SerializeField] float gliterAmount;
+    float maxGliterAmount = 100;
+
+
+    [SerializeField] Transform lastSavePoint;
+    bool isAlive = true;
+    bool canSpentGliter = true;
+
+    // VFX
     [Header("VFX - Player")]
     public Vector3 playerWalkVFXOffset;
 
     private ParticleSystem _playerWalkVFX;
-    private Rigidbody _rb;
 
-    private void Start()
+
+    void Start()
     {
-        _rb = GetComponent<Rigidbody>();
-        _rb.freezeRotation = true; 
+        gliterAmount = maxGliterAmount;
+        rb = GetComponent<Rigidbody>();
+
+        movePoint.parent = null;
 
         _playerWalkVFX = VFXManager.Instance.GetPermanentVFXByType(VFXManager.VFXType.WALK,
             this.transform.position, playerWalkVFXOffset, this.transform);
     }
 
+
     void Update()
     {
-        _horizontal = Input.GetAxis("Horizontal");
-        _vertical = Input.GetAxis("Vertical");
-
-        if (!Mathf.Approximately(_horizontal, 0) && Mathf.Approximately(_vertical, 0))
+        if (isAlive)
         {
-            DisableWalkVFX();
-        }
-        else if (!Mathf.Approximately(_vertical, 0))
-        {
-            EnableWalkVFX();
+            //Movement();
+            GridMovement();
+            DeathTrigger();
         }
 
-
-        transform.Rotate(Vector3.up * _horizontal * rotationSpeed * Time.deltaTime);
-
-        Vector3 moveDirection = transform.forward * _vertical * speed;
-        _rb.velocity = new Vector3(moveDirection.x, _rb.velocity.y, moveDirection.z);
     }
 
-    private void FixedUpdate()
+    private void OnDrawGizmos()
     {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(movePoint.position, obstacleCheckRadius);
+    }
 
+    void Movement()
+    {
+        Vector3 input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
+
+        rb.velocity = input * moveSpeed;
+    }
+
+    void GridMovement()
+    {
+        float inputX = Input.GetAxisRaw("Horizontal");
+        float inputZ = Input.GetAxisRaw("Vertical");
+
+        transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
+
+
+        if (Vector3.Distance(transform.position, movePoint.position) < 0.5f)
+        {
+            if (inputX != 0)
+            {
+                movePoint.position += new Vector3(inputX, 0, 0);
+                if (canSpentGliter)
+                    gliterAmount -= 1;
+            }
+            else if (inputZ != 0)
+            {
+                movePoint.position += new Vector3(0, 0, inputZ);
+                if (canSpentGliter)
+                    gliterAmount -= 1;
+            }
+
+            Collider[] obstacles = Physics.OverlapSphere(movePoint.position, obstacleCheckRadius, obstacleLayer);
+            if (obstacles.Length > 0)
+            {
+                movePoint.position = transform.position;
+                canSpentGliter = false;
+            }
+            else
+            {
+                canSpentGliter = true;
+            }
+
+        }
+
+    }
+
+    void TakeGliter()
+    {
+        gliterAmount += 50;
+        if (gliterAmount > maxGliterAmount)
+            gliterAmount = maxGliterAmount;
+    }
+
+    void DeathTrigger()
+    {
+        if (gliterAmount <= 0 && isAlive)
+        {
+            isAlive = false;
+            StartCoroutine(Death());
+        }
+
+    }
+
+    IEnumerator Death()
+    {
+        //Anima��o de morrer;
+        transform.Rotate(0, 0, 90);
+
+        yield return new WaitForSeconds(2f);
+
+        if (lastSavePoint != null)
+            GameManager.instance.RestartGame(lastSavePoint, this);
+        else
+            Destroy(gameObject);
+
+        yield return null;
+    }
+
+    void SavePosition(Transform position)
+    {
+        lastSavePoint = position;
+        Debug.Log(lastSavePoint);
+    }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.CompareTag("GliterPot"))
+        {
+            TakeGliter();
+            Destroy(collider.gameObject);
+
+        }
+
+        if (collider.CompareTag("SavePoint"))
+        {
+            SavePosition(collider.transform);
+            //SavePoint fazer alguma altera��o e bloquea-lo
+
+        }
     }
 
     #region PLAYER_VFX
