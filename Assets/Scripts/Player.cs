@@ -34,8 +34,8 @@ public class Player : MonoBehaviour
         if (isAlive)
         {
             //Movement();
-            //GridMovement();
-            //DeathTrigger();
+            GridMovement();
+            DeathTrigger();
         }
         
     }
