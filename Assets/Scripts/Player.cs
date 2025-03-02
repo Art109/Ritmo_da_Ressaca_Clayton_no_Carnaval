@@ -7,28 +7,38 @@ public class Player : MonoBehaviour
 {
     Rigidbody rb;
     float moveSpeed = 2;
-    [SerializeField]Transform movePoint;
-    [SerializeField]LayerMask obstacleLayer;
-    [SerializeField]float obstacleCheckRadius; 
-    
-    
-    [SerializeField]float gliterAmount;
+    [SerializeField] Transform movePoint;
+    [SerializeField] LayerMask obstacleLayer;
+    [SerializeField] float obstacleCheckRadius;
+
+
+    [SerializeField] float gliterAmount;
     float maxGliterAmount = 100;
-    
-    
-    [SerializeField]Transform lastSavePoint;
+
+
+    [SerializeField] Transform lastSavePoint;
     bool isAlive = true;
-    
-    
+    bool canSpentGliter = true;
+
+    // VFX
+    [Header("VFX - Player")]
+    public Vector3 playerWalkVFXOffset;
+
+    private ParticleSystem _playerWalkVFX;
+
+
     void Start()
     {
         gliterAmount = maxGliterAmount;
         rb = GetComponent<Rigidbody>();
 
         movePoint.parent = null;
+
+        _playerWalkVFX = VFXManager.Instance.GetPermanentVFXByType(VFXManager.VFXType.WALK,
+            this.transform.position, playerWalkVFXOffset, this.transform);
     }
 
-    
+
     void Update()
     {
         if (isAlive)
@@ -37,7 +47,7 @@ public class Player : MonoBehaviour
             GridMovement();
             DeathTrigger();
         }
-        
+
     }
 
     private void OnDrawGizmos()
@@ -48,7 +58,7 @@ public class Player : MonoBehaviour
 
     void Movement()
     {
-        Vector3 input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        Vector3 input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
 
         rb.velocity = input * moveSpeed;
     }
@@ -61,27 +71,34 @@ public class Player : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
 
 
-        if (Vector3.Distance(transform.position, movePoint.position ) < 0.5f)
+        if (Vector3.Distance(transform.position, movePoint.position) < 0.5f)
         {
             if (inputX != 0)
             {
                 movePoint.position += new Vector3(inputX, 0, 0);
-                gliterAmount -= 1;
+                if (canSpentGliter)
+                    gliterAmount -= 1;
             }
-            if (inputZ != 0)
+            else if (inputZ != 0)
             {
                 movePoint.position += new Vector3(0, 0, inputZ);
-                gliterAmount -= 1;
+                if (canSpentGliter)
+                    gliterAmount -= 1;
             }
 
             Collider[] obstacles = Physics.OverlapSphere(movePoint.position, obstacleCheckRadius, obstacleLayer);
             if (obstacles.Length > 0)
             {
                 movePoint.position = transform.position;
+                canSpentGliter = false;
             }
-           
+            else
+            {
+                canSpentGliter = true;
+            }
+
         }
-        
+
     }
 
     void TakeGliter()
@@ -93,17 +110,17 @@ public class Player : MonoBehaviour
 
     void DeathTrigger()
     {
-        if(gliterAmount <= 0 && isAlive)
+        if (gliterAmount <= 0 && isAlive)
         {
             isAlive = false;
             StartCoroutine(Death());
         }
-            
+
     }
 
     IEnumerator Death()
     {
-        //Animação de morrer;
+        //Animaï¿½ï¿½o de morrer;
         transform.Rotate(0, 0, 90);
 
         yield return new WaitForSeconds(2f);
@@ -128,14 +145,32 @@ public class Player : MonoBehaviour
         {
             TakeGliter();
             Destroy(collider.gameObject);
-            
+
         }
 
         if (collider.CompareTag("SavePoint"))
         {
             SavePosition(collider.transform);
-            //SavePoint fazer alguma alteração e bloquea-lo
-            
+            //SavePoint fazer alguma alteraï¿½ï¿½o e bloquea-lo
+
         }
     }
+
+    #region PLAYER_VFX
+    private void EnableWalkVFX()
+    {
+        if (!_playerWalkVFX.isPlaying)
+        {
+            _playerWalkVFX.Play();
+        }
+    }
+
+    private void DisableWalkVFX()
+    {
+        if (_playerWalkVFX.isPlaying)
+        {
+            _playerWalkVFX.Stop();
+        }
+    }
+    #endregion
 }

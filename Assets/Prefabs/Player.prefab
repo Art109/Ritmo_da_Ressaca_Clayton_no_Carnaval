@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6271935320129696953}
   - component: {fileID: 1144001536388299415}
   - component: {fileID: 791794954722579210}
-  - component: {fileID: 9131304184143515076}
+  - component: {fileID: 4985677972766093858}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -139,7 +139,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &9131304184143515076
+--- !u!114 &4985677972766093858
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,15 +148,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 3549749873684111527}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36b6fcd654da64647a7d654cb17834d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d4056680ea41894cbb28905c2f83dde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   movePoint: {fileID: 4837867500681018577}
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 64
-  obstacleCheckRadius: 0.5
-  gliterAmount: 0
+    m_Bits: 128
+  obstacleCheckRadius: 1
+  gliterAmount: 100
+  lastSavePoint: {fileID: 0}
+  playerWalkVFXOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &8492889415019181982
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,7 +184,7 @@ Transform:
   m_GameObject: {fileID: 8492889415019181982}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.55, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
