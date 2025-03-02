@@ -69,6 +69,7 @@ public class Player : MonoBehaviour
         float inputZ = Input.GetAxisRaw("Vertical");
 
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
+        transform.LookAt(movePoint);
 
 
         if (Vector3.Distance(transform.position, movePoint.position) < 0.5f)

@@ -206,7 +206,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.48028028, y: 0.000000029944992, z: -0.000000016396923, w: 0.87711513}
+  m_LocalRotation: {x: 0.48028028, y: 0.00000006012895, z: -0.000000032924692, w: 0.87711513}
   m_LocalPosition: {x: 32.520424, y: 33.507156, z: -31.856216}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -355,7 +355,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 355304062}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.48028028, y: 0.000000029944992, z: -0.000000016396923, w: 0.87711513}
+  m_LocalRotation: {x: 0.48028028, y: 0.00000006012895, z: -0.000000032924692, w: 0.87711513}
   m_LocalPosition: {x: 32.520424, y: 33.507156, z: -31.856216}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1876,25 +1876,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1144001536388299415, guid: 3f164a51c95048545aeaad57ad5acfd3,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3549749873684111527, guid: 3f164a51c95048545aeaad57ad5acfd3,
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 4837867500681018577, guid: 3f164a51c95048545aeaad57ad5acfd3,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.992
-      objectReference: {fileID: 0}
-    - target: {fileID: 4985677972766093858, guid: 3f164a51c95048545aeaad57ad5acfd3,
-        type: 3}
-      propertyPath: obstacleCheckRadius
-      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 8648128062413483245, guid: 3f164a51c95048545aeaad57ad5acfd3,
         type: 3}
