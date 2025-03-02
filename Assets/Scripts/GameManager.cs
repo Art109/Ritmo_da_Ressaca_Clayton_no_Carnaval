@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -12,6 +13,10 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
     [SerializeField] GameObject playerPrefab;
+
+    // Cinemachine
+    [Header("Cinemachine")]
+    [SerializeField] CinemachineVirtualCamera virtualCamera;
 
     void Start()
     {
@@ -30,9 +35,11 @@ public class GameManager : MonoBehaviour
     public void RestartGame(Transform savePointPosition, Player player)
     {
         Destroy(player.gameObject);
-        Instantiate(playerPrefab, savePointPosition);
+
+        GameObject newPlayer = Instantiate(playerPrefab, savePointPosition.position, Quaternion.identity);
+
+        virtualCamera.LookAt = newPlayer.transform;
+        virtualCamera.Follow = newPlayer.transform;
     }
-
-
 
 }

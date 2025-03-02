@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -25,7 +26,6 @@ public class Player : MonoBehaviour
     public Vector3 playerWalkVFXOffset;
 
     private ParticleSystem _playerWalkVFX;
-
 
     void Start()
     {
@@ -77,13 +77,21 @@ public class Player : MonoBehaviour
             {
                 movePoint.position += new Vector3(inputX, 0, 0);
                 if (canSpentGliter)
+                {
                     gliterAmount -= 1;
+                    var emission = _playerWalkVFX.emission;
+                    emission.rateOverDistance = new ParticleSystem.MinMaxCurve(gliterAmount);
+                }
             }
             else if (inputZ != 0)
             {
                 movePoint.position += new Vector3(0, 0, inputZ);
                 if (canSpentGliter)
+                {
                     gliterAmount -= 1;
+                    var emission = _playerWalkVFX.emission;
+                    emission.rateOverDistance = new ParticleSystem.MinMaxCurve(gliterAmount);
+                }
             }
 
             Collider[] obstacles = Physics.OverlapSphere(movePoint.position, obstacleCheckRadius, obstacleLayer);

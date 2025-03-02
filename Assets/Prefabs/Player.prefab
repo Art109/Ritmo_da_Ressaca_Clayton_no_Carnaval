@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6271935320129696953}
   - component: {fileID: 1144001536388299415}
   - component: {fileID: 4985677972766093858}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +130,7 @@ MonoBehaviour:
   obstacleCheckRadius: 1
   gliterAmount: 100
   lastSavePoint: {fileID: 0}
-  playerWalkVFXOffset: {x: 0, y: 0, z: 0}
+  playerWalkVFXOffset: {x: 0, y: 0, z: -0.492}
 --- !u!1 &8492889415019181982
 GameObject:
   m_ObjectHideFlags: 0
