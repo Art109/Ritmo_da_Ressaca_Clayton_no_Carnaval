@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+
+   
     Rigidbody rb;
     float moveSpeed = 2;
     [Header("GridMovement Settings")]
@@ -13,12 +15,16 @@ public class Player : MonoBehaviour
     [SerializeField] LayerMask obstacleLayer;
     [SerializeField] float obstacleCheckRadius;
 
+    [Header("Interaction Settings")]
+    [SerializeField] LayerMask interactableLayer;
+    [SerializeField] float interactionCheckRadius;
+
 
     [SerializeField] float gliterAmount;
     float maxGliterAmount = 100;
 
-
-    [SerializeField] Transform lastSavePoint;
+    
+    Transform lastSavePoint;
     bool isAlive = true;
     bool canSpentGliter = true;
 
@@ -45,6 +51,7 @@ public class Player : MonoBehaviour
         if (isAlive)
         {
             //Movement();
+            Interaction();
             GridMovement();
             DeathTrigger();
         }
@@ -55,8 +62,11 @@ public class Player : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(movePoint.position, obstacleCheckRadius);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, interactionCheckRadius);
     }
 
+    #region PlayerMovement
     void Movement()
     {
         Vector3 input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
@@ -111,6 +121,7 @@ public class Player : MonoBehaviour
         }
 
     }
+    #endregion
 
     void TakeGliter()
     {
@@ -146,26 +157,36 @@ public class Player : MonoBehaviour
 
     void SavePosition(Transform position)
     {
-        lastSavePoint = position;
+        if(lastSavePoint ==  null || lastSavePoint != position)
+            lastSavePoint = position;
         Debug.Log(lastSavePoint);
     }
 
-    private void OnTriggerEnter(Collider collider)
+    #region PlayerInteraction
+    void Interaction()
     {
-        if (collider.CompareTag("GliterPot"))
-        {
-            TakeGliter();
-            Destroy(collider.gameObject);
+        Collider[] interactables = Physics.OverlapSphere(transform.position, interactionCheckRadius, interactableLayer);
 
+        foreach(var interactable in interactables)
+        {
+            if (interactable.CompareTag("GliterPot"))
+            {
+                TakeGliter();
+                Destroy(interactable.gameObject);
+
+            }
+
+            if (interactable.CompareTag("SavePoint"))
+            {
+                SavePosition(interactable.transform);
+                //SavePoint fazer alguma altera��o e bloquea-lo
+
+            }
         }
 
-        if (collider.CompareTag("SavePoint"))
-        {
-            SavePosition(collider.transform);
-            //SavePoint fazer alguma altera��o e bloquea-lo
-
-        }
     }
+    #endregion
+
 
     #region PLAYER_VFX
     private void EnableWalkVFX()

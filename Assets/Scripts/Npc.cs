@@ -15,6 +15,7 @@ public class Npc : MonoBehaviour
 
         if (player != null && !_hasInteract)
         {
+            Debug.Log("Disparei o efeito");
             VFXManager.Instance.PlayVFXByTypeWithCollision(VFXManager.VFXType.CONFETTI,
                 this.transform.position, offset, null, true, 
                 timeToDestroyConfetti);
