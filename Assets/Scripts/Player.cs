@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 {
     Rigidbody rb;
     float moveSpeed = 2;
+    [Header("GridMovement Settings")]
     [SerializeField] Transform movePoint;
     [SerializeField] LayerMask obstacleLayer;
     [SerializeField] float obstacleCheckRadius;
@@ -69,6 +70,8 @@ public class Player : MonoBehaviour
         float inputZ = Input.GetAxisRaw("Vertical");
 
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
+
+        transform.LookAt(movePoint);
 
 
         if (Vector3.Distance(transform.position, movePoint.position) < 0.5f)

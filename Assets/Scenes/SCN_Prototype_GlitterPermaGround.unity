@@ -1295,6 +1295,11 @@ MonoBehaviour:
   playerPrefab: {fileID: 3549749873684111527, guid: 3f164a51c95048545aeaad57ad5acfd3,
     type: 3}
   virtualCamera: {fileID: 355304063}
+  dialogueText: {fileID: 0}
+  dialoguePanel: {fileID: 0}
+  textSpeed: 0
+  playerPrefab: {fileID: 3549749873684111527, guid: 3f164a51c95048545aeaad57ad5acfd3,
+    type: 3}
 --- !u!1 &1290008395
 GameObject:
   m_ObjectHideFlags: 3
