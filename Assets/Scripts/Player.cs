@@ -75,8 +75,8 @@ public class Player : MonoBehaviour
 
         transform.LookAt(movePoint);
 
-
-        if (Vector3.Distance(transform.position, movePoint.position) < 0.5f)
+        // Change de < to 0.1f to more faster movement Input
+        if (Vector3.Distance(transform.position, movePoint.position) < 0.1f)
         {
             if (inputX != 0)
             {
