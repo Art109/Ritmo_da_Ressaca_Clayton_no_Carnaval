@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     [Header("Cinemachine")]
     [SerializeField] CinemachineVirtualCamera virtualCamera;
 
-    void Start()
+    void Awake()
     {
         if (instance != null && instance != this)
             Destroy(gameObject);
@@ -55,6 +55,8 @@ public class GameManager : MonoBehaviour
         Destroy(player.gameObject);
 
         GameObject newPlayer = Instantiate(playerPrefab, savePointPosition.position, Quaternion.identity);
+
+        UIImageFillManager.Instance.UpdateGlitterImage(1);
 
         virtualCamera.Follow = newPlayer.transform;
     }

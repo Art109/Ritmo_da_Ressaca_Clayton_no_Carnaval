@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour
     public Vector3 playerWalkVFXOffset;
 
     private ParticleSystem _playerWalkVFX;
+    private Image _glitterImg;
 
     void Start()
     {
@@ -84,6 +86,7 @@ public class Player : MonoBehaviour
                     gliterAmount -= 1;
                     var emission = _playerWalkVFX.emission;
                     emission.rateOverDistance = new ParticleSystem.MinMaxCurve(gliterAmount);
+                    UIImageFillManager.Instance.UpdateGlitterImage(gliterAmount / 100);
                 }
             }
             else if (inputZ != 0)
@@ -94,6 +97,7 @@ public class Player : MonoBehaviour
                     gliterAmount -= 1;
                     var emission = _playerWalkVFX.emission;
                     emission.rateOverDistance = new ParticleSystem.MinMaxCurve(gliterAmount);
+                    UIImageFillManager.Instance.UpdateGlitterImage(gliterAmount / 100);
                 }
             }
 
