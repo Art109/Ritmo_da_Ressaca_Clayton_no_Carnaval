@@ -20,11 +20,14 @@ public class Player : MonoBehaviour
     [SerializeField] float interactionCheckRadius;
 
 
+    int playerScore = 0;
+    public int PlayerScore {  get { return PlayerScore; } }
+
     [SerializeField] float gliterAmount;
     float maxGliterAmount = 100;
 
     
-    Transform lastSavePoint;
+    //Transform lastSavePoint;
     bool isAlive = true;
     bool canSpentGliter = true;
 
@@ -94,6 +97,7 @@ public class Player : MonoBehaviour
                     gliterAmount -= 1;
                     var emission = _playerWalkVFX.emission;
                     emission.rateOverDistance = new ParticleSystem.MinMaxCurve(gliterAmount);
+                    playerScore += 1;
                 }
             }
             else if (inputZ != 0)
@@ -104,6 +108,7 @@ public class Player : MonoBehaviour
                     gliterAmount -= 1;
                     var emission = _playerWalkVFX.emission;
                     emission.rateOverDistance = new ParticleSystem.MinMaxCurve(gliterAmount);
+                    playerScore += 1;
                 }
             }
 
@@ -147,20 +152,28 @@ public class Player : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
+        /*
         if (lastSavePoint != null)
             GameManager.instance.RestartGame(lastSavePoint, this);
         else
+        {
+            GameManager.instance.EndGame();
             Destroy(gameObject);
+        }
+        */
+        GameManager.instance.EndGame();
+        Destroy(gameObject);
 
         yield return null;
     }
 
+    /*
     void SavePosition(Transform position)
     {
         if(lastSavePoint ==  null || lastSavePoint != position)
             lastSavePoint = position;
         Debug.Log(lastSavePoint);
-    }
+    }*/
 
     #region PlayerInteraction
     void Interaction()
@@ -170,17 +183,20 @@ public class Player : MonoBehaviour
         foreach(var interactable in interactables)
         {
             IInteractable inter = interactable.GetComponent<IInteractable>();
+          
             if (interactable.CompareTag("GliterPot"))
             {
                 TakeGliter();
             }
 
+            /*
             if (interactable.CompareTag("SavePoint"))
             {
                 SavePosition(interactable.transform);
-            }
+            }*/
 
-            inter.Interaction();
+            if(inter != null)
+                inter.Interaction();
         }
 
     }

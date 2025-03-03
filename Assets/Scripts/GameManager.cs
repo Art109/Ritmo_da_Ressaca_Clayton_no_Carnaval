@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] float textSpeed;
     bool isTyping = false;
 
+    
+
 
     public static GameManager instance;
     [SerializeField] GameObject playerPrefab;
@@ -48,6 +50,7 @@ public class GameManager : MonoBehaviour
     public void EndGame()
     {
         //Logica de Finalizar o Game (CutScene)
+        Debug.Log("Acabou o jogo");
     }
 
     public void RestartGame(Transform savePointPosition, Player player)
