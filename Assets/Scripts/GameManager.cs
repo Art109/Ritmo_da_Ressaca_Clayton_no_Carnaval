@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                StartDialogue("FASDDDDDFASFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFAS");
+                StartDialogue("Aaahhh...Tá legal...");
             }
         }
         
@@ -56,7 +56,6 @@ public class GameManager : MonoBehaviour
 
         GameObject newPlayer = Instantiate(playerPrefab, savePointPosition.position, Quaternion.identity);
 
-        virtualCamera.LookAt = newPlayer.transform;
         virtualCamera.Follow = newPlayer.transform;
     }
 
