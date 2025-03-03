@@ -169,19 +169,18 @@ public class Player : MonoBehaviour
 
         foreach(var interactable in interactables)
         {
+            IInteractable inter = interactable.GetComponent<IInteractable>();
             if (interactable.CompareTag("GliterPot"))
             {
                 TakeGliter();
-                Destroy(interactable.gameObject);
-
             }
 
             if (interactable.CompareTag("SavePoint"))
             {
                 SavePosition(interactable.transform);
-                //SavePoint fazer alguma altera��o e bloquea-lo
-
             }
+
+            inter.Interaction();
         }
 
     }
