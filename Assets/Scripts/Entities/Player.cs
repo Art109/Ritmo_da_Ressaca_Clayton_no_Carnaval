@@ -21,6 +21,10 @@ public class Player : MonoBehaviour
     [SerializeField] LayerMask interactableLayer;
     [SerializeField] float interactionCheckRadius;
 
+    //Animation
+    [SerializeField]Animator animator;
+    bool isWalking = false;
+
 
     int playerScore = 0;
     public int PlayerScore {  get { return playerScore; } }
@@ -115,6 +119,7 @@ public class Player : MonoBehaviour
                     emission.rateOverDistance = new ParticleSystem.MinMaxCurve(gliterAmount);
                     UIImageFillManager.Instance.UpdateGlitterImage(gliterAmount / 100);
                     playerScore += 1;
+                    isWalking = true;
                 }
             }
             else if (inputZ != 0)
@@ -127,6 +132,7 @@ public class Player : MonoBehaviour
                     emission.rateOverDistance = new ParticleSystem.MinMaxCurve(gliterAmount);
                     UIImageFillManager.Instance.UpdateGlitterImage(gliterAmount / 100);
                     playerScore += 1;
+                    isWalking = true;
                 }
             }
 
@@ -140,7 +146,8 @@ public class Player : MonoBehaviour
             {
                 canSpentGliter = true;
             }
-
+            
+            animator.SetBool("isWalking", isWalking);
         }
 
     }
