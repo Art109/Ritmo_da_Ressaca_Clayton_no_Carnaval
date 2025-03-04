@@ -14,6 +14,7 @@ public class ScoreHUD : MonoBehaviour
 
     private int lastDisplayedPoints = -1; // Armazena o último valor mostrado
 
+    public GameObject menuContainer;
 
     private void Start()
     {
