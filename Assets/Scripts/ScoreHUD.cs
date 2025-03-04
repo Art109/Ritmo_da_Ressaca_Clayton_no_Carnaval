@@ -41,7 +41,7 @@ public class ScoreHUD : MonoBehaviour
             starsNumber = 3;
         }
 
-        AnimatePoints(score);
+        StartCoroutine(AnimatePoints(score));
         StartCoroutine(FillStars(starsNumber));
     }
 
@@ -62,7 +62,7 @@ public class ScoreHUD : MonoBehaviour
         
     }
 
-    void AnimatePoints(float score)
+    IEnumerator AnimatePoints(float score)
     {
         float currentPoints = 0;
 
@@ -80,6 +80,17 @@ public class ScoreHUD : MonoBehaviour
             }
         }, score, animationDuration)
         .SetEase(Ease.OutQuad);
+
+        yield return new WaitForSeconds(2f);
+
+        foreach (var points in ScoreManager.Instance.GetScores())
+        {
+            if(score > points.score)
+            {
+                menuContainer.SetActive(true);
+                break;
+            }
+        }
     }
 
     void AnimateScale()

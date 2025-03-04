@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame(Transform savePointPosition, Player player)
     {
+
         Destroy(player.gameObject);
 
         GameObject newPlayer = Instantiate(playerPrefab, savePointPosition.position, Quaternion.identity);
