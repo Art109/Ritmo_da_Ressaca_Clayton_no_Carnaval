@@ -33,7 +33,7 @@ public class ScoreManager : MonoBehaviour
             Destroy(gameObject);
 
         savePath = Application.persistentDataPath + "/ranking.json";
-        Debug.Log(savePath);
+        
         LoadScores();
     }
 

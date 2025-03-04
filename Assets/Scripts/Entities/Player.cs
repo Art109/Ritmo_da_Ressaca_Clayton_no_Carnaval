@@ -7,8 +7,6 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-
-
     public static Player instance;
     
     [Header("GridMovement Settings")]
@@ -31,6 +29,8 @@ public class Player : MonoBehaviour
     bool foundObjective;
     public bool FoundObjective{ get { return foundObjective; } set { foundObjective = value; } }
 
+    public bool CanControl { get => canControl; set => canControl = value; }
+    public Animator Animator { get => animator; set => animator = value; }
 
     [SerializeField] float gliterAmount;
     float maxGliterAmount = 100;
@@ -46,6 +46,9 @@ public class Player : MonoBehaviour
 
     private ParticleSystem _playerWalkVFX;
     private Image _glitterImg;
+
+    // Control
+    private bool canControl = true;
 
 
     private void Awake()
@@ -73,7 +76,8 @@ public class Player : MonoBehaviour
         {
             //Movement();
             Interaction();
-            GridMovement();
+            if (canControl)
+                GridMovement();
             DeathTrigger();
         }
 
@@ -104,7 +108,13 @@ public class Player : MonoBehaviour
 
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
 
-        transform.LookAt(movePoint);
+        Vector3 direction = movePoint.position - transform.position;
+        direction.y = 0; 
+
+        if (direction.sqrMagnitude > 0.01f) 
+        {
+            transform.rotation = Quaternion.LookRotation(direction);
+        }
 
         // Change de < to 0.1f to more faster movement Input
         if (Vector3.Distance(transform.position, movePoint.position) < 0.1f)
@@ -135,6 +145,10 @@ public class Player : MonoBehaviour
                     isWalking = true;
                 }
             }
+            else
+            {
+                isWalking = false;
+            }
 
             Collider[] obstacles = Physics.OverlapSphere(movePoint.position, obstacleCheckRadius, obstacleLayer);
             if (obstacles.Length > 0)
@@ -147,7 +161,7 @@ public class Player : MonoBehaviour
                 canSpentGliter = true;
             }
             
-            animator.SetBool("isWalking", isWalking);
+            Animator.SetBool("isWalking", isWalking);
         }
 
     }
@@ -173,9 +187,9 @@ public class Player : MonoBehaviour
     IEnumerator Death()
     {
         //Anima��o de morrer;
-        transform.Rotate(0, 0, 90);
+        Animator.SetTrigger("Death");
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(100f);
 
         /*
         if (lastSavePoint != null)

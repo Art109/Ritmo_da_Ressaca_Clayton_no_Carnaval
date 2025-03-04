@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
 
     public int playerScore;
 
+
+
     void Start()
     {
         if (instance != null && instance != this)
@@ -60,7 +62,6 @@ public class GameManager : MonoBehaviour
             playerScore = Player.instance.PlayerScore;
         }
         SceneManager.LoadScene("Game Over");
-        Debug.Log("Acabou o jogo");
     }
 
     public void RestartGame(Transform savePointPosition, Player player)
