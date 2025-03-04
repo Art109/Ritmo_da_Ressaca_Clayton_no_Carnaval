@@ -7,19 +7,32 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    Rigidbody rb;
-    float moveSpeed = 2;
+
+
+    public static Player instance;
+    
     [Header("GridMovement Settings")]
     [SerializeField] Transform movePoint;
     [SerializeField] LayerMask obstacleLayer;
     [SerializeField] float obstacleCheckRadius;
+    float moveSpeed = 2;
+
+    [Header("Interaction Settings")]
+    [SerializeField] LayerMask interactableLayer;
+    [SerializeField] float interactionCheckRadius;
+
+
+    int playerScore = 0;
+    public int PlayerScore {  get { return playerScore; } }
+    bool foundObjective;
+    public bool FoundObjective{ get { return foundObjective; } set { foundObjective = value; } }
 
 
     [SerializeField] float gliterAmount;
     float maxGliterAmount = 100;
 
-
-    [SerializeField] Transform lastSavePoint;
+    
+    //Transform lastSavePoint;
     bool isAlive = true;
     bool canSpentGliter = true;
 
@@ -30,10 +43,18 @@ public class Player : MonoBehaviour
     private ParticleSystem _playerWalkVFX;
     private Image _glitterImg;
 
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+            Destroy(gameObject);
+        else
+            instance = this;
+    }
+
     void Start()
     {
         gliterAmount = maxGliterAmount;
-        rb = GetComponent<Rigidbody>();
 
         movePoint.parent = null;
 
@@ -47,6 +68,7 @@ public class Player : MonoBehaviour
         if (isAlive)
         {
             //Movement();
+            Interaction();
             GridMovement();
             DeathTrigger();
         }
@@ -57,14 +79,19 @@ public class Player : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(movePoint.position, obstacleCheckRadius);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, interactionCheckRadius);
     }
 
+    #region PlayerMovement
+
+    /*
     void Movement()
     {
         Vector3 input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
 
         rb.velocity = input * moveSpeed;
-    }
+    }*/
 
     void GridMovement()
     {
@@ -87,6 +114,7 @@ public class Player : MonoBehaviour
                     var emission = _playerWalkVFX.emission;
                     emission.rateOverDistance = new ParticleSystem.MinMaxCurve(gliterAmount);
                     UIImageFillManager.Instance.UpdateGlitterImage(gliterAmount / 100);
+                    playerScore += 1;
                 }
             }
             else if (inputZ != 0)
@@ -98,6 +126,7 @@ public class Player : MonoBehaviour
                     var emission = _playerWalkVFX.emission;
                     emission.rateOverDistance = new ParticleSystem.MinMaxCurve(gliterAmount);
                     UIImageFillManager.Instance.UpdateGlitterImage(gliterAmount / 100);
+                    playerScore += 1;
                 }
             }
 
@@ -115,6 +144,7 @@ public class Player : MonoBehaviour
         }
 
     }
+    #endregion
 
     void TakeGliter()
     {
@@ -140,36 +170,56 @@ public class Player : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
+        /*
         if (lastSavePoint != null)
             GameManager.instance.RestartGame(lastSavePoint, this);
         else
+        {
+            GameManager.instance.EndGame();
             Destroy(gameObject);
+        }
+        */
+        GameManager.instance.EndGame();
+        Destroy(gameObject);
 
         yield return null;
     }
 
+    /*
     void SavePosition(Transform position)
     {
-        lastSavePoint = position;
+        if(lastSavePoint ==  null || lastSavePoint != position)
+            lastSavePoint = position;
         Debug.Log(lastSavePoint);
-    }
+    }*/
 
-    private void OnTriggerEnter(Collider collider)
+    #region PlayerInteraction
+    void Interaction()
     {
-        if (collider.CompareTag("GliterPot"))
-        {
-            TakeGliter();
-            Destroy(collider.gameObject);
+        Collider[] interactables = Physics.OverlapSphere(transform.position, interactionCheckRadius, interactableLayer);
 
+        foreach(var interactable in interactables)
+        {
+            IInteractable inter = interactable.GetComponent<IInteractable>();
+          
+            if (interactable.CompareTag("GliterPot"))
+            {
+                TakeGliter();
+            }
+
+            /*
+            if (interactable.CompareTag("SavePoint"))
+            {
+                SavePosition(interactable.transform);
+            }*/
+
+            if(inter != null)
+                inter.Interaction();
         }
 
-        if (collider.CompareTag("SavePoint"))
-        {
-            SavePosition(collider.transform);
-            //SavePoint fazer alguma altera��o e bloquea-lo
-
-        }
     }
+    #endregion
+
 
     #region PLAYER_VFX
     private void EnableWalkVFX()

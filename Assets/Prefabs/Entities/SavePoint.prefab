@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5083010721714713430}
   - component: {fileID: 3734606666300476949}
   - component: {fileID: 9034476729506738241}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SavePoint
   m_TagString: SavePoint
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2

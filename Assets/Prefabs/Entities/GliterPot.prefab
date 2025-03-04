@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1623070471339843551}
   - component: {fileID: 5243680932408210725}
   - component: {fileID: 4603648672955092951}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GliterPot
   m_TagString: GliterPot
   m_Icon: {fileID: 0}

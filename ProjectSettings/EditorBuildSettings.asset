@@ -8,5 +8,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SCN_Prototype_Diego 2.unity
     guid: a719f4ddbc8d592479db89aefd1f7b24
+    path: Assets/Scenes/SCN_Prototype_Diego.unity
+    guid: e9c8e2fd08cbc2341ae2dcc29784d28d
+  - enabled: 1
+    path: Assets/Scenes/Arthur_Scene.unity
+    guid: 8101a6cae325685439f12bbdc050a6fd
+  - enabled: 1
+    path: Assets/Scenes/Game Over.unity
+    guid: 65fe8bd9f5250bd4c926587ea9b0c33b
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
