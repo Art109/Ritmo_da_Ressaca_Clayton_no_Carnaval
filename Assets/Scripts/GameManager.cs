@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     [Header("Cinemachine")]
     [SerializeField] CinemachineVirtualCamera virtualCamera;
 
-    public float playerScore;
+    public int playerScore;
 
     void Start()
     {
