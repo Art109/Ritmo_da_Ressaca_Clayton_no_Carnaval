@@ -26,7 +26,10 @@ public class BlocoCarnaval : MonoBehaviour, IInteractable
     public void Interaction()
     {
         if (playerBloco)
+        {
+            Player.instance.FoundObjective = true;
             GameManager.instance.EndGame();
+        }
         else
             StartCoroutine(Alert());
     }

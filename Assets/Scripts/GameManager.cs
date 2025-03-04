@@ -4,6 +4,7 @@ using Cinemachine;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,8 +18,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] float textSpeed;
     bool isTyping = false;
 
-    
-
 
     public static GameManager instance;
     [SerializeField] GameObject playerPrefab;
@@ -27,12 +26,19 @@ public class GameManager : MonoBehaviour
     [Header("Cinemachine")]
     [SerializeField] CinemachineVirtualCamera virtualCamera;
 
+
+    public float playerScore;
+
     void Start()
     {
         if (instance != null && instance != this)
             Destroy(gameObject);
         else
+        {
             instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+            
     }
 
     private void Update()
@@ -50,6 +56,11 @@ public class GameManager : MonoBehaviour
     public void EndGame()
     {
         //Logica de Finalizar o Game (CutScene)
+        if (Player.instance.FoundObjective) 
+        {
+            playerScore = Player.instance.PlayerScore;
+        }
+        SceneManager.LoadScene("Game Over");
         Debug.Log("Acabou o jogo");
     }
 

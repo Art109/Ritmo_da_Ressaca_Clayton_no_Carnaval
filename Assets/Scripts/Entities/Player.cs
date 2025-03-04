@@ -7,13 +7,14 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
-   
-    Rigidbody rb;
-    float moveSpeed = 2;
+
+    public static Player instance;
+    
     [Header("GridMovement Settings")]
     [SerializeField] Transform movePoint;
     [SerializeField] LayerMask obstacleLayer;
     [SerializeField] float obstacleCheckRadius;
+    float moveSpeed = 2;
 
     [Header("Interaction Settings")]
     [SerializeField] LayerMask interactableLayer;
@@ -21,7 +22,10 @@ public class Player : MonoBehaviour
 
 
     int playerScore = 0;
-    public int PlayerScore {  get { return PlayerScore; } }
+    public int PlayerScore {  get { return playerScore; } }
+    bool foundObjective;
+    public bool FoundObjective{ get { return foundObjective; } set { foundObjective = value; } }
+
 
     [SerializeField] float gliterAmount;
     float maxGliterAmount = 100;
@@ -37,10 +41,18 @@ public class Player : MonoBehaviour
 
     private ParticleSystem _playerWalkVFX;
 
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+            Destroy(gameObject);
+        else
+            instance = this;
+    }
+
     void Start()
     {
         gliterAmount = maxGliterAmount;
-        rb = GetComponent<Rigidbody>();
 
         movePoint.parent = null;
 
@@ -70,12 +82,14 @@ public class Player : MonoBehaviour
     }
 
     #region PlayerMovement
+
+    /*
     void Movement()
     {
         Vector3 input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
 
         rb.velocity = input * moveSpeed;
-    }
+    }*/
 
     void GridMovement()
     {
