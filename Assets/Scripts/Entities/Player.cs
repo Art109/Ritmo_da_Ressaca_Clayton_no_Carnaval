@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -40,6 +41,7 @@ public class Player : MonoBehaviour
     public Vector3 playerWalkVFXOffset;
 
     private ParticleSystem _playerWalkVFX;
+    private Image _glitterImg;
 
 
     private void Awake()
@@ -100,8 +102,8 @@ public class Player : MonoBehaviour
 
         transform.LookAt(movePoint);
 
-
-        if (Vector3.Distance(transform.position, movePoint.position) < 0.5f)
+        // Change de < to 0.1f to more faster movement Input
+        if (Vector3.Distance(transform.position, movePoint.position) < 0.1f)
         {
             if (inputX != 0)
             {
@@ -111,6 +113,7 @@ public class Player : MonoBehaviour
                     gliterAmount -= 1;
                     var emission = _playerWalkVFX.emission;
                     emission.rateOverDistance = new ParticleSystem.MinMaxCurve(gliterAmount);
+                    UIImageFillManager.Instance.UpdateGlitterImage(gliterAmount / 100);
                     playerScore += 1;
                 }
             }
@@ -122,6 +125,7 @@ public class Player : MonoBehaviour
                     gliterAmount -= 1;
                     var emission = _playerWalkVFX.emission;
                     emission.rateOverDistance = new ParticleSystem.MinMaxCurve(gliterAmount);
+                    UIImageFillManager.Instance.UpdateGlitterImage(gliterAmount / 100);
                     playerScore += 1;
                 }
             }

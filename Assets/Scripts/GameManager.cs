@@ -26,8 +26,7 @@ public class GameManager : MonoBehaviour
     [Header("Cinemachine")]
     [SerializeField] CinemachineVirtualCamera virtualCamera;
 
-
-    public float playerScore;
+    public int playerScore;
 
     void Start()
     {
@@ -47,7 +46,7 @@ public class GameManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                StartDialogue("FASDDDDDFASFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFAS");
+                StartDialogue("Aaahhh...Tá legal...");
             }
         }
         
@@ -70,7 +69,8 @@ public class GameManager : MonoBehaviour
 
         GameObject newPlayer = Instantiate(playerPrefab, savePointPosition.position, Quaternion.identity);
 
-        virtualCamera.LookAt = newPlayer.transform;
+        UIImageFillManager.Instance.UpdateGlitterImage(1);
+
         virtualCamera.Follow = newPlayer.transform;
     }
 

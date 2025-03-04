@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1623070471339843551}
   - component: {fileID: 5243680932408210725}
   - component: {fileID: 4603648672955092951}
-  - component: {fileID: 8117296298041790534}
+  - component: {fileID: 5739631004148861130}
   m_Layer: 8
   m_Name: GliterPot
   m_TagString: GliterPot
@@ -110,7 +110,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &8117296298041790534
+--- !u!114 &5739631004148861130
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
