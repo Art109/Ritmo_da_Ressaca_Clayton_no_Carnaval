@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5243680932408210725}
   - component: {fileID: 4603648672955092951}
   - component: {fileID: 5739631004148861130}
+  - component: {fileID: 4458914326535390201}
   m_Layer: 8
   m_Name: GliterPot
   m_TagString: GliterPot
@@ -123,4 +124,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 0, z: 0}
+  timeToDestroyConfetti: 200
+--- !u!114 &4458914326535390201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815888224373056139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9f21f4d40069bd47b7341bbb8947b3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: {x: 0, y: 1.3, z: 0}
   timeToDestroyConfetti: 200

@@ -2309,6 +2309,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7202180920823577635, guid: 9bada1b8ff603cc458779626ff2ae51e,
         type: 3}
+      propertyPath: playerBloco
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7202180920823577635, guid: 9bada1b8ff603cc458779626ff2ae51e,
+        type: 3}
       propertyPath: cameras.Array.size
       value: 1
       objectReference: {fileID: 0}
