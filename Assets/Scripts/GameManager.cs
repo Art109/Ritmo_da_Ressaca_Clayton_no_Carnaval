@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
         //Logica de Finalizar o Game (CutScene)
         if (Player.instance.FoundObjective) 
         {
+            GivePointsByTime();
             playerScore = Player.instance.PlayerScore;
         }
         SceneManager.LoadScene("Game Over");
@@ -111,6 +112,11 @@ public class GameManager : MonoBehaviour
         if(!isTyping)
             dialoguePanel.SetActive(false);
 
+    }
+
+    private void GivePointsByTime()
+    {
+        TimeManager.Instance.ApplyTimeBonus();
     }
 
 }
