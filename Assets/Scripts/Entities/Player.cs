@@ -25,12 +25,13 @@ public class Player : MonoBehaviour
 
 
     int playerScore = 0;
-    public int PlayerScore {  get { return playerScore; } }
+    public int PlayerScore { get { return playerScore; } set { playerScore = value; } }
     bool foundObjective;
     public bool FoundObjective{ get { return foundObjective; } set { foundObjective = value; } }
 
     public bool CanControl { get => canControl; set => canControl = value; }
     public Animator Animator { get => animator; set => animator = value; }
+    public float GliterAmount { get => gliterAmount; set => gliterAmount = value; }
 
     [SerializeField] float gliterAmount;
     float maxGliterAmount = 100;
@@ -61,7 +62,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        gliterAmount = maxGliterAmount;
+        GliterAmount = maxGliterAmount;
 
         movePoint.parent = null;
 
@@ -103,80 +104,73 @@ public class Player : MonoBehaviour
 
     void GridMovement()
     {
+        if (Vector3.Distance(transform.position, movePoint.position) > 0.01f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
+            return;
+        }
+
         float inputX = Input.GetAxisRaw("Horizontal");
         float inputZ = Input.GetAxisRaw("Vertical");
 
-        transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
-
-        Vector3 direction = movePoint.position - transform.position;
-        direction.y = 0; 
-
-        if (direction.sqrMagnitude > 0.01f) 
+        if (inputX != 0)
         {
-            transform.rotation = Quaternion.LookRotation(direction);
+            inputZ = 0;
         }
 
-        // Change de < to 0.1f to more faster movement Input
-        if (Vector3.Distance(transform.position, movePoint.position) < 0.1f)
+        if (inputX != 0 || inputZ != 0)
         {
-            if (inputX != 0)
+            Vector3 nextPosition = movePoint.position + new Vector3(inputX, 0, inputZ);
+
+            if (Physics.OverlapSphere(nextPosition, obstacleCheckRadius, obstacleLayer).Length == 0)
             {
-                movePoint.position += new Vector3(inputX, 0, 0);
-                if (canSpentGliter)
+                movePoint.position = nextPosition;
+                isWalking = true;
+
+                // Rotação correta
+                Vector3 direction = movePoint.position - transform.position;
+                direction.y = 0;
+
+                if (direction.sqrMagnitude > 0.01f)
                 {
-                    gliterAmount -= 1;
-                    var emission = _playerWalkVFX.emission;
-                    emission.rateOverDistance = new ParticleSystem.MinMaxCurve(gliterAmount);
-                    UIImageFillManager.Instance.UpdateGlitterImage(gliterAmount / 100);
-                    playerScore += 1;
-                    isWalking = true;
+                    transform.rotation = Quaternion.LookRotation(direction);
                 }
-            }
-            else if (inputZ != 0)
-            {
-                movePoint.position += new Vector3(0, 0, inputZ);
+
                 if (canSpentGliter)
                 {
-                    gliterAmount -= 1;
+                    GliterAmount -= 0.8f;
                     var emission = _playerWalkVFX.emission;
-                    emission.rateOverDistance = new ParticleSystem.MinMaxCurve(gliterAmount);
-                    UIImageFillManager.Instance.UpdateGlitterImage(gliterAmount / 100);
+                    emission.rateOverDistance = new ParticleSystem.MinMaxCurve(GliterAmount);
+                    UIImageFillManager.Instance.UpdateGlitterImage(GliterAmount / 100);
                     playerScore += 1;
-                    isWalking = true;
                 }
             }
             else
             {
                 isWalking = false;
             }
-
-            Collider[] obstacles = Physics.OverlapSphere(movePoint.position, obstacleCheckRadius, obstacleLayer);
-            if (obstacles.Length > 0)
-            {
-                movePoint.position = transform.position;
-                canSpentGliter = false;
-            }
-            else
-            {
-                canSpentGliter = true;
-            }
-            
-            Animator.SetBool("isWalking", isWalking);
+        }
+        else
+        {
+            isWalking = false;
         }
 
+        Animator.SetBool("isWalking", isWalking);
     }
+
+
     #endregion
 
     void TakeGliter()
     {
-        gliterAmount += 50;
-        if (gliterAmount > maxGliterAmount)
-            gliterAmount = maxGliterAmount;
+        GliterAmount += 50;
+        if (GliterAmount > maxGliterAmount)
+            GliterAmount = maxGliterAmount;
     }
 
     void DeathTrigger()
     {
-        if (gliterAmount <= 0 && isAlive)
+        if (GliterAmount <= 0 && isAlive)
         {
             isAlive = false;
             StartCoroutine(Death());

@@ -6,8 +6,6 @@ public class PauseManager : MonoBehaviour
 {
     public static PauseManager Instance;
 
-    private bool _paused = false;
-
     private void Awake()
     {
         if (Instance == null)
@@ -18,7 +16,11 @@ public class PauseManager : MonoBehaviour
 
     public void Pause()
     {
-        Time.timeScale = _paused ? 1 : 0;
-        _paused = !_paused;
+        Time.timeScale = 0;
+    }
+
+    public void UnPause()
+    {
+        Time.timeScale = 1;
     }
 }
