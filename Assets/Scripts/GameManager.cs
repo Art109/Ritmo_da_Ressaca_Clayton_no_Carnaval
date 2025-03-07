@@ -39,7 +39,8 @@ public class GameManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
-            
+
+        Time.timeScale = 0f;
     }
 
     private void Update()
@@ -117,6 +118,11 @@ public class GameManager : MonoBehaviour
     private void GivePointsByTime()
     {
         TimeManager.Instance.ApplyTimeBonus();
+    }
+
+    public void GetPlayerScore()
+    {
+        playerScore = Player.instance.PlayerScore;
     }
 
 }

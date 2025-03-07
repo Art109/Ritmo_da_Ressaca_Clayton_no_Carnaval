@@ -20,7 +20,7 @@ public class ScoreManager : MonoBehaviour
 {
     private string savePath;
     private Scoreboard scoreboard = new Scoreboard();
-    private const int maxEntries = 3; // Define o máximo de registros no ranking
+    private const int maxEntries = 5; 
 
     public static ScoreManager Instance;
 
@@ -38,13 +38,11 @@ public class ScoreManager : MonoBehaviour
 
     public void AddScore(string playerName, int score)
     {
-        Debug.Log("Antes de salvar");
         scoreboard.scores.Add(new ScoreEntry { playerName = playerName, score = score });
-        scoreboard.scores.Sort((a, b) => b.score.CompareTo(a.score)); // Ordena do maior para o menor
-        Debug.Log("Depois de salvar");
+        scoreboard.scores.Sort((a, b) => b.score.CompareTo(a.score)); 
         if (scoreboard.scores.Count > maxEntries)
         {
-            scoreboard.scores.RemoveAt(scoreboard.scores.Count - 1); // Mantém o máximo permitido
+            scoreboard.scores.RemoveAt(scoreboard.scores.Count - 1); 
         }
 
         SaveScores();
@@ -55,7 +53,6 @@ public class ScoreManager : MonoBehaviour
         string json = JsonUtility.ToJson(scoreboard);
         Debug.Log(json);
         File.WriteAllText(savePath, json);
-        Debug.Log("Salvei!");
     }
 
     private void LoadScores()

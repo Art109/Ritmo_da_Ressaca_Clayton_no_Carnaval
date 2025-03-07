@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class UIRankingUpdate : MonoBehaviour
 {
     public List<Ranking> rakings;
 
     List<ScoreEntry> scores;
-
 
     private void Start()
     {
@@ -28,12 +28,16 @@ public class UIRankingUpdate : MonoBehaviour
                 rakings[index].name.text = entry.playerName;
                 rakings[index].points.text = entry.score.ToString();
             }
-            else
-            {
-                rakings[index].name.text = "";
-                rakings[index].points.text = "0";
-            }
             ++index;
+        }
+
+        if (scores.Count == 0)
+        {
+            for (int i = 0; i < rakings.Count; ++i)
+            {
+                rakings[i].name.text = "";
+                rakings[i].points.text = "0";
+            }
         }
     }
 }
@@ -43,4 +47,5 @@ public class Ranking
 {
     public TextMeshProUGUI name;
     public TextMeshProUGUI points;
+    public UIMenuInput uiMenuInput; 
 }

@@ -8,13 +8,10 @@ using UnityEngine.UI;
 public class ScoreHUD : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI playerScore;
-    [SerializeField] Image[] starts;
 
     public float animationDuration = 3f;
 
     private int lastDisplayedPoints = -1; // Armazena o último valor mostrado
-
-    public GameObject menuContainer;
 
     private void Start()
     {
@@ -25,41 +22,8 @@ public class ScoreHUD : MonoBehaviour
     void UpdateHUD()
     {
         float score = GameManager.instance.playerScore;
-        int starsNumber = 0;
-
-        if (score >= 10 && score <= 20)
-        {
-            starsNumber = 1;
-
-        }
-        else if (score > 20 && score <= 30)
-        {
-            starsNumber = 2;
-        }
-        else if (score > 30)
-        {
-            starsNumber = 3;
-        }
 
         StartCoroutine(AnimatePoints(score));
-        StartCoroutine(FillStars(starsNumber));
-    }
-
-    IEnumerator FillStars(int numberStars)
-    {
-        for (int i = 0; i < numberStars; i++) 
-        {
-            float j = 0;
-            while( j <= 1)
-            {
-                starts[i].fillAmount += j;
-                j += 0.1f;
-                yield return new WaitForSeconds(0.09f);
-            }
-            
-            
-        }
-        
     }
 
     IEnumerator AnimatePoints(float score)
@@ -87,7 +51,7 @@ public class ScoreHUD : MonoBehaviour
         {
             if(score > points.score)
             {
-                menuContainer.SetActive(true);
+                //menuContainer.SetActive(true);
                 break;
             }
         }
