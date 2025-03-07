@@ -46,15 +46,6 @@ public class ScoreHUD : MonoBehaviour
         .SetEase(Ease.OutQuad);
 
         yield return new WaitForSeconds(2f);
-
-        foreach (var points in ScoreManager.Instance.GetScores())
-        {
-            if(score > points.score)
-            {
-                //menuContainer.SetActive(true);
-                break;
-            }
-        }
     }
 
     void AnimateScale()

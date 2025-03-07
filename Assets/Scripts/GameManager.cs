@@ -57,14 +57,15 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
-        //Logica de Finalizar o Game (CutScene)
-        if (Player.instance.FoundObjective) 
+        if (Player.instance.FoundObjective)
         {
             GivePointsByTime();
             playerScore = Player.instance.PlayerScore;
         }
+
         SceneManager.LoadScene("Game Over");
     }
+
 
     public void RestartGame(Transform savePointPosition, Player player)
     {

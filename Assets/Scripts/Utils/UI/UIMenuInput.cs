@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,24 +7,29 @@ using UnityEngine.UI;
 public class UIMenuInput : MonoBehaviour
 {
     public Image image;
+    public Sprite normal;
     public TMP_InputField playerScoreName;
+    public TextMeshProUGUI normalText;
 
+    [System.Obsolete]
     public void Save()
     {
-        if (playerScoreName != null && playerScoreName.text != "")
+        if (playerScoreName != null && !string.IsNullOrEmpty(playerScoreName.text))
         {
-            ScoreManager.Instance.AddScore(playerScoreName.text,
-                GameManager.instance.playerScore);
+            // 🚀 Em vez de adicionar um novo score, chama SaveScore() da UIWinScreen!
+            FindObjectOfType<UIWinScreen>().SaveScore();
         }
     }
+
 
     public void EnableInteraction(bool value)
     {
         playerScoreName.interactable = value;
     }
 
-    public void SetSprite(Sprite sprite)
+    public void ResetSprite()
     {
-        this.image.sprite = sprite;
+        image.sprite = normal;
+        normalText.color = Color.white;
     }
 }

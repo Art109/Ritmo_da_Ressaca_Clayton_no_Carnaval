@@ -10,9 +10,12 @@ public class UIRankingUpdate : MonoBehaviour
 
     List<ScoreEntry> scores;
 
+    public bool winScreen = false;
+
     private void Start()
     {
-        UpdateScoresOnUi();
+        if (!winScreen) 
+            UpdateScoresOnUi();
     }
 
     public void UpdateScoresOnUi()

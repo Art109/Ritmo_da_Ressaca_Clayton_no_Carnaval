@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] Transform movePoint;
     [SerializeField] LayerMask obstacleLayer;
     [SerializeField] float obstacleCheckRadius;
-    float moveSpeed = 2;
+    [SerializeField] float moveSpeed = 2;
 
     [Header("Interaction Settings")]
     [SerializeField] LayerMask interactableLayer;

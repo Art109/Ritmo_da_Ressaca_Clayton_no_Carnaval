@@ -1,72 +1,74 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class UIWinScreen : MonoBehaviour
 {
-    public List<Ranking> rankings; // Refer�ncia para os textos do ranking na tela
+    public Sprite normal;
+    public Sprite selected;
+    public List<Ranking> rankings; // Referência para os textos do ranking na tela
     private List<ScoreEntry> scores;
     private int playerScore;
 
     private void Start()
     {
+        ScoreManager.Instance.SaveInitialScore(playerScore);
+        StartCoroutine(DelayedUpdateScores());
+    }
+
+    private IEnumerator DelayedUpdateScores()
+    {
+        yield return new WaitForEndOfFrame(); // Aguarda o frame terminar
         playerScore = GameManager.instance.playerScore;
+
+        // Agora que playerScore está atualizado, salva corretamente
+        ScoreManager.Instance.SaveInitialScore(playerScore);
+
         UpdateScoresOnUi();
     }
+
 
     public void UpdateScoresOnUi()
     {
         scores = ScoreManager.Instance.GetScores();
-        int index = 0;
-        int playerIndex = -1; // �ndice onde o jogador entraria no ranking
 
-        foreach (ScoreEntry entry in scores)
+        // 🛑 Evita ativar a edição de uma posição que não precisa ser editada
+        int playerIndex = scores.FindIndex(s => string.IsNullOrEmpty(s.playerName) && s.score > 0);
+
+        // 🔄 Atualiza os textos do ranking **antes** de definir interações
+        for (int i = 0; i < rankings.Count; i++)
         {
-            if (entry != null)
+            if (i < scores.Count)
             {
-                rankings[index].name.text = entry.playerName;
-                rankings[index].points.text = entry.score.ToString();
-
-                // Encontra a posi��o correta para o novo score
-                if (playerScore > entry.score && playerIndex == -1)
-                {
-                    playerIndex = index;
-                }
+                rankings[i].name.text = scores[i].playerName;
+                rankings[i].points.text = scores[i].score.ToString();
             }
-            ++index;
-        }
-
-        if (scores.Count == 0)
-        {
-            for (int i = 0; i < rankings.Count; ++i)
+            else
             {
                 rankings[i].name.text = "";
                 rankings[i].points.text = "0";
             }
         }
 
-        // Verifica se o jogador pode entrar no ranking
-        bool canEnterRanking = scores.Count < 5 || playerScore > scores[scores.Count - 1].score;
-
-        // Desativa todos os inputs antes de ativar o correto
+        // 🚫 Desativa todas as interações antes de ativar a correta
         foreach (var rank in rankings)
         {
             rank.uiMenuInput.EnableInteraction(false);
+            rank.uiMenuInput.image.sprite = normal;
         }
 
-        if (canEnterRanking)
+        // ✅ Ativa SOMENTE se realmente for necessário editar um nome em branco com pontuação válida
+        if (playerIndex != -1 && playerIndex < rankings.Count)
         {
-            if (playerIndex == -1)
-            {
-                // Se o score for o menor da lista, adiciona no final
-                playerIndex = scores.Count < 5 ? scores.Count : scores.Count - 1;
-            }
-
-            // Ativa o input field apenas na posi��o correta
             rankings[playerIndex].uiMenuInput.EnableInteraction(true);
+            rankings[playerIndex].uiMenuInput.image.sprite = selected;
+            rankings[playerIndex].uiMenuInput.playerScoreName.Select();
         }
     }
+
+
+
 
     public void SaveScore()
     {
@@ -78,13 +80,24 @@ public class UIWinScreen : MonoBehaviour
 
                 if (!string.IsNullOrEmpty(playerName))
                 {
-                    // Salva o score e desativa o input
-                    ScoreManager.Instance.AddScore(playerName, playerScore);
-                    UpdateScoresOnUi();
-                    rank.uiMenuInput.EnableInteraction(false);
+                    // 🔍 Encontra o score vazio correspondente ao jogador
+                    var emptyEntry = scores.Find(s => string.IsNullOrEmpty(s.playerName) && s.score == playerScore);
+
+                    if (emptyEntry != null)
+                    {
+                        emptyEntry.playerName = playerName; // Atualiza o nome corretamente
+                        ScoreManager.Instance.SaveScores(); // Salva no JSON sem reordenar a lista
+                    }
+
+                    rank.uiMenuInput.EnableInteraction(false); // Desativa o input após edição
+                    rank.uiMenuInput.ResetSprite(); // Reseta o sprite do input field
+
+                    UpdateScoresOnUi(); // Atualiza a interface sem mexer na ordem
                 }
                 break;
             }
         }
     }
+
+
 }
