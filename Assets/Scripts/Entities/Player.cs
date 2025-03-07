@@ -140,7 +140,7 @@ public class Player : MonoBehaviour
                 {
                     GliterAmount -= 0.8f;
                     var emission = _playerWalkVFX.emission;
-                    emission.rateOverDistance = new ParticleSystem.MinMaxCurve(GliterAmount);
+                    emission.rateOverDistance = new ParticleSystem.MinMaxCurve(GliterAmount * 0.5f);
                     UIImageFillManager.Instance.UpdateGlitterImage(GliterAmount / 100);
                     playerScore += 1;
                 }
