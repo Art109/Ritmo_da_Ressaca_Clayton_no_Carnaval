@@ -187,7 +187,7 @@ public class Player : MonoBehaviour
         //Anima��o de morrer;
         Animator.SetTrigger("Death");
 
-        yield return new WaitForSeconds(100f);
+        yield return new WaitForSeconds(10f);
 
         /*
         if (lastSavePoint != null)
