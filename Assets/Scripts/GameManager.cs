@@ -44,27 +44,18 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    private void Update()
-    {
-        if (!isTyping)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                StartDialogue("Aaahhh...Tá legal...");
-            }
-        }
-        
-    }
-
     public void EndGame()
     {
         if (Player.instance.FoundObjective)
         {
             GivePointsByTime();
             playerScore = Player.instance.PlayerScore;
+            SceneManager.LoadScene("Game Over");
         }
-
-        SceneManager.LoadScene("Game Over");
+        else
+        {
+            SceneManager.LoadScene("DERROTA");
+        }
     }
 
 
@@ -108,7 +99,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(textSpeed);
         }
 
-        Debug.Log("Terminei de digitar");
+        
 
         isTyping = false;
 

@@ -116,7 +116,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 200
+      scalar: 600
       minScalar: 6
       maxCurve:
         serializedVersion: 2
@@ -169,7 +169,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 8
+      scalar: 6
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -665,14 +665,14 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 20
+    angle: 3.88
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
-    m_Scale: {x: 1, y: 1, z: 1}
+    m_Scale: {x: 1, y: 1, z: 0.73}
     placementMode: 0
     m_MeshMaterialIndex: 0
     m_MeshNormalOffset: 0
@@ -3878,9 +3878,9 @@ ParticleSystem:
       properties: 0
       emitProbability: 0.1
   LightsModule:
-    enabled: 0
+    enabled: 1
     ratio: 0
-    light: {fileID: 0}
+    light: {fileID: 7162606106830238339, guid: 5af91182edf958640ba79dd0c9cd56d6, type: 3}
     randomDistribution: 1
     color: 1
     range: 1
@@ -4838,7 +4838,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c00b93d41e7f91d4f95bc8e4a92c3888, type: 2}
+  - {fileID: 2100000, guid: e90a4dc7ae20f2f4ba78027530d62376, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

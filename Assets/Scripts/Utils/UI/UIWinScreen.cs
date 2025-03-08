@@ -93,6 +93,21 @@ public class UIWinScreen : MonoBehaviour
                     rank.uiMenuInput.ResetSprite(); // Reseta o sprite do input field
 
                     UpdateScoresOnUi(); // Atualiza a interface sem mexer na ordem
+                } else if (string.IsNullOrEmpty(playerName))
+                {
+                    // 🔍 Encontra o score vazio correspondente ao jogador
+                    var emptyEntry = scores.Find(s => string.IsNullOrEmpty(s.playerName) && s.score == playerScore);
+
+                    if (emptyEntry != null)
+                    {
+                        emptyEntry.playerName = "player"; // Atualiza o nome corretamente
+                        ScoreManager.Instance.SaveScores(); // Salva no JSON sem reordenar a lista
+                    }
+
+                    rank.uiMenuInput.EnableInteraction(false); // Desativa o input após edição
+                    rank.uiMenuInput.ResetSprite(); // Reseta o sprite do input field
+
+                    UpdateScoresOnUi(); // Atualiza a interface sem mexer na ordem
                 }
                 break;
             }

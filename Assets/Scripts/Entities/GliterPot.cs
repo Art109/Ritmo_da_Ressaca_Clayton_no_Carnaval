@@ -30,6 +30,8 @@ public class GliterPot : MonoBehaviour, IInteractable
                 this.transform.position, offset, null, true,
                 timeToDestroyConfetti);
 
+            Player.instance.TakeGliter();
+
             UIImageFillManager.Instance.UpdateGlitterImage(Player.instance.GliterAmount / 100);
 
             Destroy(gameObject, clip.length);

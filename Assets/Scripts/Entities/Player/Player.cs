@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     public static Player instance;
-    
+
     [Header("GridMovement Settings")]
     [SerializeField] Transform movePoint;
     [SerializeField] LayerMask obstacleLayer;
@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     [SerializeField] float interactionCheckRadius;
 
     //Animation
-    [SerializeField]Animator animator;
+    [SerializeField] Animator animator;
     bool isWalking = false;
 
     [Header("SFX Controlles")]
@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     int playerScore = 0;
     public int PlayerScore { get { return playerScore; } set { playerScore = value; } }
     bool foundObjective;
-    public bool FoundObjective{ get { return foundObjective; } set { foundObjective = value; } }
+    public bool FoundObjective { get { return foundObjective; } set { foundObjective = value; } }
 
     public bool CanControl { get => canControl; set => canControl = value; }
     public Animator Animator { get => animator; set => animator = value; }
@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
     [SerializeField] float gliterAmount;
     float maxGliterAmount = 100;
 
-    
+
     //Transform lastSavePoint;
     bool isAlive = true;
     bool canSpentGliter = true;
@@ -165,8 +165,9 @@ public class Player : MonoBehaviour
 
     #endregion
 
-    void TakeGliter()
+    public void TakeGliter()
     {
+        UIImageFillManager.Instance.UpdateGlitterImage(GliterAmount / 100);
         GliterAmount += 50;
         if (GliterAmount > maxGliterAmount)
             GliterAmount = maxGliterAmount;
@@ -187,7 +188,7 @@ public class Player : MonoBehaviour
         //Anima��o de morrer;
         Animator.SetTrigger("Death");
 
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(5f);
 
         /*
         if (lastSavePoint != null)
@@ -217,14 +218,9 @@ public class Player : MonoBehaviour
     {
         Collider[] interactables = Physics.OverlapSphere(transform.position, interactionCheckRadius, interactableLayer);
 
-        foreach(var interactable in interactables)
+        foreach (var interactable in interactables)
         {
             IInteractable inter = interactable.GetComponent<IInteractable>();
-          
-            if (interactable.CompareTag("GliterPot"))
-            {
-                TakeGliter();
-            }
 
             /*
             if (interactable.CompareTag("SavePoint"))
@@ -232,7 +228,7 @@ public class Player : MonoBehaviour
                 SavePosition(interactable.transform);
             }*/
 
-            if(inter != null)
+            if (inter != null)
                 inter.Interaction();
         }
 

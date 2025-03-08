@@ -14,7 +14,7 @@ public class UIMenuInput : MonoBehaviour
     [System.Obsolete]
     public void Save()
     {
-        if (playerScoreName != null && !string.IsNullOrEmpty(playerScoreName.text))
+        if (playerScoreName != null)
         {
             // 🚀 Em vez de adicionar um novo score, chama SaveScore() da UIWinScreen!
             FindObjectOfType<UIWinScreen>().SaveScore();

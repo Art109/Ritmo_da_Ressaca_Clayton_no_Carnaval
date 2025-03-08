@@ -17,5 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game/Game Over.unity
     guid: 65fe8bd9f5250bd4c926587ea9b0c33b
+  - enabled: 1
+    path: Assets/Scenes/DERROTA.unity
+    guid: 6b7a810c826f385448fe905cde4cc634
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
