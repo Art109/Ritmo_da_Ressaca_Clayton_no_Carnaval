@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TimeManager : MonoBehaviour
 {
@@ -37,6 +38,7 @@ public class TimeManager : MonoBehaviour
         {
             isRunning = false;
             // Game Over
+            SceneManager.LoadScene("DERROTA");
         }
     }
 

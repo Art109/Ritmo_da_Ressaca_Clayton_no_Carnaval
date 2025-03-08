@@ -25,14 +25,17 @@ public class BlocoCarnaval : MonoBehaviour, IInteractable
 
     void Update()
     {
-        if (cameras[0].activeSelf) 
+        if(cameras != null)
         {
-            Vector3 direction = cameras[0].transform.position - Player.instance.transform.position;
-            direction.y = 0;
-
-            if (direction.sqrMagnitude > 0.01f)
+            if (cameras[0].activeSelf)
             {
-                Player.instance.transform.rotation = Quaternion.LookRotation(direction);
+                Vector3 direction = cameras[0].transform.position - Player.instance.transform.position;
+                direction.y = 0;
+
+                if (direction.sqrMagnitude > 0.01f)
+                {
+                    Player.instance.transform.rotation = Quaternion.LookRotation(direction);
+                }
             }
         }
     }

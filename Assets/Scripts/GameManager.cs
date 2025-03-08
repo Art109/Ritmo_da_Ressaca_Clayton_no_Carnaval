@@ -16,11 +16,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI dialogueText;
     [SerializeField] GameObject dialoguePanel;
     [SerializeField] float textSpeed;
+    [SerializeField] AudioSource dialogBoxAudioSource;
     bool isTyping = false;
 
 
     public static GameManager instance;
-    [SerializeField] GameObject playerPrefab;
+    //[SerializeField] GameObject playerPrefab;
 
     // Cinemachine
     [Header("Cinemachine")]
@@ -39,7 +40,8 @@ public class GameManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
-            
+
+        Time.timeScale = 0f;
     }
 
     private void Update()
@@ -56,15 +58,17 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
-        //Logica de Finalizar o Game (CutScene)
-        if (Player.instance.FoundObjective) 
+        if (Player.instance.FoundObjective)
         {
             GivePointsByTime();
             playerScore = Player.instance.PlayerScore;
         }
+
         SceneManager.LoadScene("Game Over");
     }
 
+
+    /*
     public void RestartGame(Transform savePointPosition, Player player)
     {
 
@@ -75,7 +79,7 @@ public class GameManager : MonoBehaviour
         UIImageFillManager.Instance.UpdateGlitterImage(1);
 
         virtualCamera.Follow = newPlayer.transform;
-    }
+    }*/
 
     public void StartDialogue(string lines)
     {
@@ -99,6 +103,7 @@ public class GameManager : MonoBehaviour
 
         foreach(char c in text.ToCharArray())
         {
+            dialogBoxAudioSource.Play();
             dialogueText.text += c;
             yield return new WaitForSeconds(textSpeed);
         }
@@ -117,6 +122,11 @@ public class GameManager : MonoBehaviour
     private void GivePointsByTime()
     {
         TimeManager.Instance.ApplyTimeBonus();
+    }
+
+    public void GetPlayerScore()
+    {
+        playerScore = Player.instance.PlayerScore;
     }
 
 }
