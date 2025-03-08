@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class TimeManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _timeText;
-    private float timeRemaining = 600f; // 10 minutos em segundos
+    private float timeRemaining = 180f; // 10 minutos em segundos
     private bool isRunning = true;
 
     public static TimeManager Instance;

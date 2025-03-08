@@ -182,13 +182,13 @@ public class Player : MonoBehaviour
         }
 
     }
-
+    //
     IEnumerator Death()
     {
         //Anima��o de morrer;
         Animator.SetTrigger("Death");
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(1.7f);
 
         /*
         if (lastSavePoint != null)
