@@ -1,6 +1,6 @@
 # 🎭 Ritmo da Ressaca Clayton no Carnaval  
 
-**Ritmo da Ressaca Clayton no Carnaval** é um jogo desenvolvido para a **CTRL ALT GAME JAM - Edição de Carnaval 2025**, com o tema **"Cadê meu bloco?"**.  
+**Ritmo da Ressaca Clayton no Carnaval** é um jogo desenvolvido para a **CTRL ALT JAM - Edição de Carnaval 2025**, com o tema **"Cadê meu bloco?"**.  
 
 No jogo, você está em um labirinto que representa uma cidade onde o Carnaval está acontecendo. Seu personagem está bêbado e acabou se perdendo do bloco. Agora, seu objetivo é encontrá-lo!  
 
